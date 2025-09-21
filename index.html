@@ -5,37 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>內湖高中軍武社</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGreen: '#1B5E20',
+            brandBlack: '#0D0D0D'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
+<body class="bg-brandBlack text-white font-sans">
 
   <!-- 🔰 導覽列 -->
-  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+  <nav class="bg-brandGreen px-6 py-4 flex justify-between items-center">
     <h1 class="text-xl font-bold">內湖高中軍武社</h1>
     <div class="space-x-4">
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/schedule.html" class="hover:underline">活動排程</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/attendance.html" class="hover:underline">出缺勤</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/finance.html" class="hover:underline">財務紀錄</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/knowledge.html" class="hover:underline">知識分享</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/about.html" class="hover:underline">關於我們</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/add-event.html" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">新增活動</a>
+      <a href="https://pyps0990-alt.github.io/pages/schedule.html" class="hover:underline">活動排程</a>
+      <a href="https://pyps0990-alt.github.io/pages/attendance.html" class="hover:underline">出缺勤</a>
+      <a href="https://pyps0990-alt.github.io/pages/finance.html" class="hover:underline">財務紀錄</a>
+      <a href="https://pyps0990-alt.github.io/pages/knowledge.html" class="hover:underline">知識分享</a>
+      <a href="https://pyps0990-alt.github.io/pages/about.html" class="hover:underline">關於我們</a>
     </div>
   </nav>
 
   <!-- 📣 公告區 -->
-  <section class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
+  <section class="max-w-3xl mx-auto mt-10 p-6 bg-white text-gray-800 rounded shadow">
     <h2 class="text-2xl font-semibold mb-4">📣 最新公告</h2>
     <ul class="list-disc pl-5 space-y-2">
       <li>2025/09/28（六）戰術講解活動，請幹部提前 15 分鐘集合</li>
       <li>2025/10/02 幹部會議將討論社費預算與新裝備採購</li>
-      <li>新增活動功能已開放，請幹部前往「新增活動」頁面輸入身份後使用</li>
+      <li>新增活動功能已開放，請幹部於下方驗證後使用</li>
     </ul>
   </section>
 
+  <!-- 📌 新增活動區塊 -->
+  <section id="eventEntry" class="max-w-3xl mx-auto mt-10 p-6 bg-white text-gray-800 rounded shadow">
+    <h2 class="text-xl font-semibold mb-4">📌 新增活動（幹部限定）</h2>
+    <div id="eventLocked">
+      此功能僅限幹部使用，請先驗證身份。
+      <button id="openVerify" class="mt-2 bg-brandGreen text-white px-3 py-1 rounded hover:bg-green-700">驗證身份</button>
+    </div>
+
+    <form id="eventForm" class="space-y-4 hidden mt-4">
+      <input type="text" id="title" placeholder="活動名稱" required class="w-full px-3 py-2 border rounded" />
+      <input type="datetime-local" id="start" required class="w-full px-3 py-2 border rounded" />
+      <input type="datetime-local" id="end" required class="w-full px-3 py-2 border rounded" />
+      <input type="text" id="location" placeholder="地點" class="w-full px-3 py-2 border rounded" />
+      <textarea id="description" placeholder="備註" class="w-full px-3 py-2 border rounded"></textarea>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">儲存活動</button>
+    </form>
+    <p id="saveStatus" class="text-green-600 mt-4 hidden">✅ 活動已儲存</p>
+  </section>
+
+  <!-- 👤 幹部驗證彈窗 -->
+  <div id="verifyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded shadow max-w-sm w-full text-gray-800">
+      <h3 class="text-lg font-semibold mb-4">幹部身份驗證</h3>
+      <form id="verifyForm" class="space-y-3">
+        <input type="text" id="class" placeholder="班級" required class="w-full px-3 py-2 border rounded" />
+        <input type="text" id="number" placeholder="座號" required class="w-full px-3 py-2 border rounded" />
+        <input type="text" id="name" placeholder="姓名" required class="w-full px-3 py-2 border rounded" />
+        <button type="submit" class="w-full bg-brandGreen text-white py-2 rounded hover:bg-green-700">驗證</button>
+      </form>
+      <p id="verifyStatus" class="text-red-600 mt-2 hidden">❌ 驗證失敗</p>
+    </div>
+  </div>
+
   <!-- 📌 頁尾 -->
-  <footer class="text-center text-sm text-gray-500 mt-10 mb-4">
+  <footer class="text-center text-sm text-gray-400 mt-10 mb-4">
     © 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組<br />
-    <a href="mailto:nhmc9th@gmail.com" class="text-blue-600 hover:underline">nhmc9th@gmail.com</a>
+    <a href="mailto:nhmc9th@gmail.com" class="text-blue-400 hover:underline">nhmc9th@gmail.com</a>
   </footer>
+
+  <!-- 🔧 JavaScript -->
+  <script>
+    const staffList = [
+      { class: "305", number: "12", name: "王奕嘉" },
+      { class: "304", number: "7", name: "林同學" },
+      { class: "303", number: "5", name: "陳幹部" }
+    ];
+
+    document.getElementById("openVerify").addEventListener("click", () => {
+      document.getElementById("verifyModal").classList.remove("hidden");
+    });
+
+    document.getElementById("verifyForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const c = document.getElementById("class").value.trim();
+      const n = document.getElementById("number").value.trim();
+      const name = document.getElementById("name").value.trim();
+
+      const matched = staffList.some(s => s.class === c && s.number === n && s.name === name);
+      if (matched) {
+        document.getElementById("verifyModal").classList.add("hidden");
+        document.getElementById("eventLocked").classList.add("hidden");
+        document.getElementById("eventForm").classList.remove("hidden");
+      } else {
+        document.getElementById("verifyStatus").classList.remove("hidden");
+      }
+    });
+
+    document.getElementById("eventForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const activity = {
+        title: document.getElementById("title").value,
+        start: document.getElementById("start").value,
+        end: document.getElementById("end").value,
+        location: document.getElementById("location").value,
+        description: document.getElementById("description").value,
+        savedAt: new Date().toISOString()
+      };
+      const existing = JSON.parse(localStorage.getItem("nhmc_events") || "[]");
+      existing.push(activity);
+      localStorage.setItem("nhmc_events", JSON.stringify(existing));
+      document.getElementById("saveStatus").classList.remove("hidden");
+      document.getElementById("eventForm").reset();
+    });
+  </script>
 </body>
 </html>
 
@@ -79,6 +169,7 @@
   </script>
 </body>
 </html>
+
 
 
 
