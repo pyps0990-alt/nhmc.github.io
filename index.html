@@ -23,13 +23,12 @@
     </div>
   </nav>
 
-  <!-- 📣 最新公告 -->
+  <!-- 📣 公告區 -->
   <section class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
     <h2 class="text-2xl font-semibold mb-4">📣 最新公告</h2>
     <ul class="list-disc pl-5 space-y-2">
       <li>2025/09/28（六）戰術講解活動，請幹部提前 15 分鐘集合</li>
       <li>2025/10/02 幹部會議將討論社費預算與新裝備採購</li>
-      <li>網站已全面升級，請幹部登入後使用後台功能</li>
     </ul>
   </section>
 
@@ -56,8 +55,7 @@
     firebase.initializeApp(firebaseConfig);
 
     function toggleLogin() {
-      const modal = document.getElementById("loginModal");
-      modal.classList.toggle("hidden");
+      document.getElementById("loginModal").classList.toggle("hidden");
     }
 
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -76,8 +74,7 @@
   <!-- 📌 頁尾 -->
   <footer class="text-center text-sm text-gray-500 mt-10 mb-4">
     © 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組<br />
-    如有問題請聯絡：<a href="mailto:nhmc9th@gmail.com" class="text-blue-600 hover:underline">nhmc9th@gmail.com</a><br />
-    <a href="https://pyps0990-alt.github.io/" class="text-blue-600 hover:underline" target="_blank">前往 GitHub Pages 主站</a>
+    <a href="mailto:nhmc9th@gmail.com" class="text-blue-600 hover:underline">nhmc9th@gmail.com</a>
   </footer>
 </body>
 </html>
@@ -122,6 +119,7 @@
   </script>
 </body>
 </html>
+
 
 
 
