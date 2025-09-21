@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>新增活動 | 內湖高中軍武社</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
@@ -15,67 +12,86 @@
   <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
     <h1 class="text-xl font-bold">新增活動</h1>
     <div>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/index.html" class="hover:underline">回首頁</a>
+      <a href="./index.html" class="hover:underline">回首頁</a>
     </div>
   </nav>
 
-  <!-- 📝 活動表單 -->
+  <!-- 👤 幹部驗證表單 -->
   <section class="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
-    <h2 class="text-2xl font-semibold mb-4">📌 幹部新增活動</h2>
+    <h2 class="text-xl font-semibold mb-4">👤 幹部身份驗證</h2>
+    <form id="verifyForm" class="space-y-4">
+      <input type="text" id="class" placeholder="班級（例如305）" required class="w-full px-3 py-2 border rounded" />
+      <input type="text" id="number" placeholder="座號（例如12）" required class="w-full px-3 py-2 border rounded" />
+      <input type="text" id="name" placeholder="姓名" required class="w-full px-3 py-2 border rounded" />
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">驗證身份</button>
+    </form>
+    <p id="verifyStatus" class="text-red-600 mt-4 hidden">❌ 驗證失敗，請確認資料是否正確</p>
+  </section>
+
+  <!-- 📝 活動表單（預設隱藏） -->
+  <section id="eventSection" class="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow hidden">
+    <h2 class="text-xl font-semibold mb-4">📌 新增活動</h2>
     <form id="eventForm" class="space-y-4">
       <input type="text" id="title" placeholder="活動名稱" required class="w-full px-3 py-2 border rounded" />
       <input type="datetime-local" id="start" required class="w-full px-3 py-2 border rounded" />
       <input type="datetime-local" id="end" required class="w-full px-3 py-2 border rounded" />
       <input type="text" id="location" placeholder="地點" class="w-full px-3 py-2 border rounded" />
       <textarea id="description" placeholder="備註" class="w-full px-3 py-2 border rounded"></textarea>
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">新增活動</button>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">儲存活動</button>
     </form>
-    <p id="status" class="text-green-600 mt-4 hidden">✅ 活動已成功新增！</p>
+    <p id="saveStatus" class="text-green-600 mt-4 hidden">✅ 活動已儲存（暫存在本機）</p>
   </section>
 
-  <!-- 🔧 Firebase 初始化與驗證 -->
+  <!-- 🔧 JavaScript -->
   <script>
-    const firebaseConfig = {
-      apiKey: "你的API金鑰",
-      authDomain: "你的專案.firebaseapp.com",
-      projectId: "你的專案ID",
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // 幹部名單（可自行擴充）
+    const staffList = [
+      { class: "305", number: "12", name: "王奕嘉" },
+      { class: "304", number: "7", name: "林同學" },
+      { class: "303", number: "5", name: "陳幹部" }
+    ];
 
-    // 登入驗證：未登入者導回首頁
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        alert("請先登入才能新增活動");
-        window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/index.html";
+    // 幹部驗證
+    document.getElementById("verifyForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const classInput = document.getElementById("class").value.trim();
+      const numberInput = document.getElementById("number").value.trim();
+      const nameInput = document.getElementById("name").value.trim();
+
+      const matched = staffList.some(
+        (staff) =>
+          staff.class === classInput &&
+          staff.number === numberInput &&
+          staff.name === nameInput
+      );
+
+      if (matched) {
+        document.getElementById("verifyForm").style.display = "none";
+        document.getElementById("verifyStatus").classList.add("hidden");
+        document.getElementById("eventSection").classList.remove("hidden");
+      } else {
+        document.getElementById("verifyStatus").classList.remove("hidden");
       }
     });
 
-    // 表單提交 → 寫入 Firestore
-    document.getElementById("eventForm").addEventListener("submit", async (e) => {
+    // 活動儲存（LocalStorage）
+    document.getElementById("eventForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      const title = document.getElementById("title").value;
-      const start = document.getElementById("start").value;
-      const end = document.getElementById("end").value;
-      const location = document.getElementById("location").value;
-      const description = document.getElementById("description").value;
-      const user = firebase.auth().currentUser;
+      const activity = {
+        title: document.getElementById("title").value,
+        start: document.getElementById("start").value,
+        end: document.getElementById("end").value,
+        location: document.getElementById("location").value,
+        description: document.getElementById("description").value,
+        savedAt: new Date().toISOString()
+      };
 
-      try {
-        await db.collection("events").add({
-          title,
-          start,
-          end,
-          location,
-          description,
-          createdBy: user.email,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-        document.getElementById("status").classList.remove("hidden");
-        document.getElementById("eventForm").reset();
-      } catch (error) {
-        alert("新增失敗：" + error.message);
-      }
+      const existing = JSON.parse(localStorage.getItem("nhmc_events") || "[]");
+      existing.push(activity);
+      localStorage.setItem("nhmc_events", JSON.stringify(existing));
+
+      document.getElementById("saveStatus").classList.remove("hidden");
+      document.getElementById("eventForm").reset();
     });
   </script>
 
