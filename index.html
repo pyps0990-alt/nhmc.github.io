@@ -1,142 +1,87 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDGhHrcV5F93chxTeFXI0KkwgHeb0m_31g",
-      authDomain: "nhmc9th.firebaseapp.com",
-      projectId: "nhmc9th",
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>內湖高中軍武社</title>
-
-  <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <!-- 字體 -->
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto&display=swap" rel="stylesheet">
-  <!-- AOS 動畫 -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Firebase SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDGhHrcV5F93chxTeFXI0KkwgHeb0m_31g",
-      authDomain: "nhmc9th.firebaseapp.com",
-      projectId: "nhmc9th",
-      storageBucket: "nhmc9th.appspot.com",
-      messagingSenderId: "95509517890",
-      appId: "1:95509517890:web:d8627e54521db752c53fdb",
-      measurementId: "G-FKQL729HWM"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    getAnalytics(app);
-  </script>
-
-  <style>
-    body { font-family: 'Roboto', sans-serif; }
-    h1, h2, h3 { font-family: 'Oswald', sans-serif; }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-100 text-gray-800 font-sans">
 
   <!-- 🔰 導覽列 -->
-  <header class="bg-green-900 p-4 flex flex-wrap justify-between items-center text-sm md:text-base">
-    <h1 class="text-2xl font-bold text-yellow-400">內湖高中軍武社</h1>
-    <nav class="flex flex-wrap gap-2 md:gap-4">
-      <a href="index.html" class="hover:text-yellow-300">首頁</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/schedule.html" class="hover:text-yellow-300">活動排程</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/attendance.html" class="hover:text-yellow-300">出缺勤</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/finance.html" class="hover:text-yellow-300">財務紀錄</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/knowledge.html" class="hover:text-yellow-300">知識分享</a>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/about.html" class="hover:text-yellow-300">關於我們</a>
-    </nav>
-  </header>
-
-  <!-- 🖼️ 主視覺區 -->
-  <section class="relative bg-black py-20 px-4 md:px-8 text-center overflow-hidden" data-aos="fade-up">
-    <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('assets/images/IMG_1645.jpg');"></div>
-    <div class="relative z-10">
-      <h1 class="text-4xl md:text-5xl font-bold text-yellow-300 mb-4 tracking-wide">紀律・榮譽・責任</h1>
-      <p class="text-lg md:text-xl text-gray-200 mb-6">打造最專業的高中軍武社網站</p>
-      <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/about.html" class="inline-block bg-yellow-400 text-black font-semibold px-6 py-3 rounded hover:bg-yellow-300 transition transform hover:scale-105">認識我們 →</a>
+  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">內湖高中軍武社</h1>
+    <div class="space-x-4">
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/schedule.html" class="hover:underline">活動排程</a>
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/attendance.html" class="hover:underline">出缺勤</a>
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/finance.html" class="hover:underline">財務紀錄</a>
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/knowledge.html" class="hover:underline">知識分享</a>
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/about.html" class="hover:underline">關於我們</a>
+      <button onclick="toggleLogin()" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">幹部登入</button>
     </div>
-  </section>
+  </nav>
 
   <!-- 📣 最新公告 -->
-  <section class="bg-green-950 py-10 px-4 md:px-8" data-aos="fade-right">
-    <h2 class="text-2xl font-bold text-yellow-300 mb-4">📣 最新公告</h2>
-    <ul class="list-disc list-inside text-gray-200 space-y-2 text-sm md:text-base">
+  <section class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4">📣 最新公告</h2>
+    <ul class="list-disc pl-5 space-y-2">
       <li>2025/09/28（六）戰術講解活動，請幹部提前 15 分鐘集合</li>
       <li>2025/10/02 幹部會議將討論社費預算與新裝備採購</li>
       <li>網站已全面升級，請幹部登入後使用後台功能</li>
     </ul>
   </section>
 
-  <!-- 🎥 活動影片 -->
-  <section class="py-10 px-4 md:px-8 text-center" data-aos="zoom-in">
-    <h2 class="text-2xl font-bold text-yellow-300 mb-4">🎥 活動精華影片</h2>
-    <div class="relative w-full max-w-3xl mx-auto" style="padding-top: 56.25%;">
-      <iframe src="https://www.youtube.com/embed/你的影片ID" class="absolute top-0 left-0 w-full h-full rounded shadow-lg" frameborder="0" allowfullscreen></iframe>
+  <!-- 🔐 登入模組 -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-6 rounded shadow w-80">
+      <h3 class="text-lg font-bold mb-4">幹部登入</h3>
+      <form id="loginForm" class="space-y-3">
+        <input type="email" id="email" placeholder="幹部 Email" required class="w-full px-3 py-2 border rounded" />
+        <input type="password" id="password" placeholder="密碼" required class="w-full px-3 py-2 border rounded" />
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">登入</button>
+        <button type="button" onclick="toggleLogin()" class="w-full text-sm text-gray-500 mt-2">取消</button>
+      </form>
     </div>
-    <p class="text-gray-400 mt-4 text-sm">影片由幹部剪輯，完整記錄軍武社的榮耀時刻</p>
-  </section>
+  </div>
 
-  <!-- 📦 模組入口 -->
-  <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 md:p-8">
-    <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/schedule.html" class="group block bg-gradient-to-br from-green-800 to-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition">
-      <div class="flex items-center space-x-3">
-        <span class="text-3xl">📅</span>
-        <h3 class="text-xl font-bold text-yellow-300 group-hover:underline">活動排程</h3>
-      </div>
-      <p class="text-gray-200 mt-2 text-sm">查看近期活動與報名資訊</p>
-    </a>
-    <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/attendance.html" class="group block bg-gradient-to-br from-green-800 to-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition">
-      <div class="flex items-center space-x-3">
-        <span class="text-3xl">✅</span>
-        <h3 class="text-xl font-bold text-yellow-300 group-hover:underline">出缺勤點名</h3>
-      </div>
-      <p class="text-gray-200 mt-2 text-sm">幹部快速勾選出席，統計出勤</p>
-    </a>
-    <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/finance.html" class="group block bg-gradient-to-br from-green-800 to-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition">
-      <div class="flex items-center space-x-3">
-        <span class="text-3xl">💰</span>
-        <h3 class="text-xl font-bold text-yellow-300 group-hover:underline">財務紀錄</h3>
-      </div>
-      <p class="text-gray-200 mt-2 text-sm">社費收支透明化，圖表分析</p>
-    </a>
-    <a href="https://pyps0990-alt.github.io/nhmc.github.io/pages/knowledge.html" class="group block bg-gradient-to-br from-green-800 to-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition">
-      <div class="flex items-center space-x-3">
-        <span class="text-3xl">📚</span>
-        <h3 class="text-xl font-bold text-yellow-300 group-hover:underline">知識分享</h3>
-      </div>
-      <p class="text-gray-200 mt-2 text-sm">上傳文章、分類瀏覽、標籤系統</p>
-    </a>
-  </main>
+  <!-- 🔧 Firebase 初始化與登入邏輯 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "你的API金鑰",
+      authDomain: "你的專案.firebaseapp.com",
+      projectId: "你的專案ID",
+    };
+    firebase.initializeApp(firebaseConfig);
 
-   <!-- 📊 出缺勤圖表 -->
-  <section class="py-10 px-4 md:px-8 text-center" data-aos="fade-up">
-    <h2 class="text-2xl font-bold text-yellow-300 mb-4">📊 出缺勤統計</h2>
-    <canvas id="attendanceChart" class="mx-auto max-w-3xl bg-white rounded shadow-lg"></canvas>
-    <p class="text-gray-400 mt-4 text-sm">統計本月出席人數，資料由幹部填報後自動更新</p>
-  </section>
+    function toggleLogin() {
+      const modal = document.getElementById("loginModal");
+      modal.classList.toggle("hidden");
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/add-event.html";
+      } catch (error) {
+        alert("登入失敗：" + error.message);
+      }
+    });
+  </script>
 
   <!-- 📌 頁尾 -->
-  <footer class="bg-green-900 text-gray-300 text-center py-6 px-4 text-sm">
-    <p>© 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組</p>
-    <p>如有問題請聯絡：nhmc9th@gmail.com</p>
+  <footer class="text-center text-sm text-gray-500 mt-10 mb-4">
+    © 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組<br />
+    如有問題請聯絡：<a href="mailto:nhmc9th@gmail.com" class="text-blue-600 hover:underline">nhmc9th@gmail.com</a><br />
+    <a href="https://pyps0990-alt.github.io/" class="text-blue-600 hover:underline" target="_blank">前往 GitHub Pages 主站</a>
   </footer>
+</body>
+</html>
+
 
   <!-- 🔧 Chart.js 初始化 -->
   <script>
@@ -178,6 +123,7 @@
   </script>
 </body>
 </html>
+
 
 
 
