@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新增活動 | 內湖高中軍武社</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- 🔰 導覽列 -->
+  <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">新增活動</h1>
+    <div>
+      <a href="https://pyps0990-alt.github.io/nhmc.github.io/index.html" class="hover:underline">回首頁</a>
+    </div>
+  </nav>
+
+  <!-- 📝 活動表單 -->
+  <section class="max-w-xl mx-auto mt-10 p-6 bg-white rounded shadow">
+    <h2 class="text-2xl font-semibold mb-4">📌 幹部新增活動</h2>
+    <form id="eventForm" class="space-y-4">
+      <input type="text" id="title" placeholder="活動名稱" required class="w-full px-3 py-2 border rounded" />
+      <input type="datetime-local" id="start" required class="w-full px-3 py-2 border rounded" />
+      <input type="datetime-local" id="end" required class="w-full px-3 py-2 border rounded" />
+      <input type="text" id="location" placeholder="地點" class="w-full px-3 py-2 border rounded" />
+      <textarea id="description" placeholder="備註" class="w-full px-3 py-2 border rounded"></textarea>
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">新增活動</button>
+    </form>
+    <p id="status" class="text-green-600 mt-4 hidden">✅ 活動已成功新增！</p>
+  </section>
+
+  <!-- 🔧 Firebase 初始化與驗證 -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "你的API金鑰",
+      authDomain: "你的專案.firebaseapp.com",
+      projectId: "你的專案ID",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 登入驗證：未登入者導回首頁
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        alert("請先登入才能新增活動");
+        window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/index.html";
+      }
+    });
+
+    // 表單提交 → 寫入 Firestore
+    document.getElementById("eventForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value;
+      const start = document.getElementById("start").value;
+      const end = document.getElementById("end").value;
+      const location = document.getElementById("location").value;
+      const description = document.getElementById("description").value;
+      const user = firebase.auth().currentUser;
+
+      try {
+        await db.collection("events").add({
+          title,
+          start,
+          end,
+          location,
+          description,
+          createdBy: user.email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        document.getElementById("status").classList.remove("hidden");
+        document.getElementById("eventForm").reset();
+      } catch (error) {
+        alert("新增失敗：" + error.message);
+      }
+    });
+  </script>
+
+  <!-- 📌 頁尾 -->
+  <footer class="text-center text-sm text-gray-500 mt-10 mb-4">
+    © 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組
+  </footer>
+</body>
+</html>
