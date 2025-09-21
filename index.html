@@ -64,14 +64,14 @@
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       try {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         await firebase.auth().signInWithEmailAndPassword(email, password);
-        window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/add-event.html";
+        window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/pages/add-event.html";
       } catch (error) {
         alert("登入失敗：" + error.message);
       }
     });
 
-    // 顯示登入狀態
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const status = document.getElementById("loginStatus");
@@ -129,6 +129,7 @@
   </script>
 </body>
 </html>
+
 
 
 
