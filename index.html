@@ -115,7 +115,58 @@
     </a>
   </main>
 
-  <!-- 📊 出缺勤圖表 -->
-  <section class="py-10 px-4 md:px-8 text-center">
+   <!-- 📊 出缺勤圖表 -->
+  <section class="py-10 px-4 md:px-8 text-center" data-aos="fade-up">
     <h2 class="text-2xl font-bold text-yellow-300 mb-4">📊 出缺勤統計</h2>
-    <canvas
+    <canvas id="attendanceChart" class="mx-auto max-w-3xl bg-white rounded shadow-lg"></canvas>
+    <p class="text-gray-400 mt-4 text-sm">統計本月出席人數，資料由幹部填報後自動更新</p>
+  </section>
+
+  <!-- 📌 頁尾 -->
+  <footer class="bg-green-900 text-gray-300 text-center py-6 px-4 text-sm">
+    <p>© 2025 內湖高中軍武社 | 設計與維護：軍武社前端小組</p>
+    <p>如有問題請聯絡：nhmc9th@gmail.com</p>
+  </footer>
+
+  <!-- 🔧 Chart.js 初始化 -->
+  <script>
+    AOS.init(); // 啟用 AOS 動畫
+
+    const ctx = document.getElementById('attendanceChart').getContext('2d');
+    const attendanceChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['週一', '週二', '週三', '週四', '週五'],
+        datasets: [{
+          label: '出席人數',
+          data: [12, 18, 9, 14, 7], // 可改為 Firebase 串接資料
+          backgroundColor: 'rgba(255, 206, 86, 0.6)',
+          borderColor: 'rgba(255, 206, 86, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          },
+          x: {
+            ticks: { color: '#fff' },
+            grid: { color: 'rgba(255,255,255,0.1)' }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#fff' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
+
