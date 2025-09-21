@@ -13,13 +13,14 @@
   <!-- 🔰 導覽列 -->
   <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
     <h1 class="text-xl font-bold">內湖高中軍武社</h1>
-    <div class="space-x-4">
+    <div class="space-x-4 flex items-center">
       <a href="https://pyps0990-alt.github.io/nhmc.github.io/schedule.html" class="hover:underline">活動排程</a>
       <a href="https://pyps0990-alt.github.io/nhmc.github.io/attendance.html" class="hover:underline">出缺勤</a>
       <a href="https://pyps0990-alt.github.io/nhmc.github.io/finance.html" class="hover:underline">財務紀錄</a>
       <a href="https://pyps0990-alt.github.io/nhmc.github.io/knowledge.html" class="hover:underline">知識分享</a>
       <a href="https://pyps0990-alt.github.io/nhmc.github.io/about.html" class="hover:underline">關於我們</a>
       <button onclick="toggleLogin()" class="bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">幹部登入</button>
+      <span id="loginStatus" class="text-sm text-green-400 hidden ml-2"></span>
     </div>
   </nav>
 
@@ -67,6 +68,15 @@
         window.location.href = "https://pyps0990-alt.github.io/nhmc.github.io/add-event.html";
       } catch (error) {
         alert("登入失敗：" + error.message);
+      }
+    });
+
+    // 顯示登入狀態
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        const status = document.getElementById("loginStatus");
+        status.textContent = `✅ 已登入：${user.email}`;
+        status.classList.remove("hidden");
       }
     });
   </script>
@@ -119,6 +129,7 @@
   </script>
 </body>
 </html>
+
 
 
 
